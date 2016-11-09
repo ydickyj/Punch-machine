@@ -1,0 +1,3 @@
+include ':app'
+include 'h900-jna'
+project(':h900-jna').projectDir = new File(settingsDir, '../h900-jna')

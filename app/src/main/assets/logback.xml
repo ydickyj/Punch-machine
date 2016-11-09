@@ -1,0 +1,37 @@
+<configuration>
+    <property name="LOG_DIR" value="/sdcard/.pemt/logs/"/>
+
+    <!-- Create a logcat appender -->
+    <appender name="logcat" class="ch.qos.logback.classic.android.LogcatAppender">
+        <encoder>
+            <pattern>%class{0}.%method{full}\(%F:%L\) - %msg</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Create a file appender -->
+    <appender name="fileLogger" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/test.log</file>
+
+        <encoder>
+            <pattern>%date [%thread] %level %class{full}.%method{full}\(%F:%L\) - %msg%n%throwable
+            </pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover period -->
+            <fileNamePattern>${LOG_DIR}/test.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- or whenever the file size reaches 100MB -->
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!-- keep 7 days' worth of history -->
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <!-- Write INFO (and higher-level) messages to logcat -->
+    <root level="DEBUG">
+        <appender-ref ref="logcat"/>
+        <appender-ref ref="fileLogger"/>
+    </root>
+</configuration>

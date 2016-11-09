@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">打卡机程序</string>
+    <string name="version_read">读取版本</string>
+    <string name="single_read">单次读取</string>
+    <string name="continue_read">连续读取</string>
+    <string name="stop_read">停止读取</string>
+    <string name="start">开始</string>
+    <string name="stop">停止</string>
+    <string name="pass">合格</string>
+    <string name="fail">失败</string>
+
+    <string name="scanner_switch">Scanner Switch</string>
+    <string name="scanner_button">Scanner Button</string>
+
+    <string-array name="type">
+        <item>ESAM</item>
+        <item>条码</item>
+        <item>红外</item>
+        <item>RS485</item>
+        <item>蓝牙抄控器</item>
+        <item>RS232</item>
+        <item>串口抄控器</item>
+        <item>安全单元</item>
+        <item>RS485/PSAM</item>
+        <item>RS232透传</item>
+    </string-array>
+
+    <string-array name="activity_channel_listener_type">
+        <item>红外</item>
+        <item>485</item>
+        <item>232</item>
+        <item>蓝牙抄控器</item>
+        <item>安全单元</item>
+    </string-array>
+    </resources>
