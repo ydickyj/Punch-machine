@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eeeeee"
+    android:orientation="vertical">
+
+    <com.pemt.pda.punchmachine.punch_machine.adapter.MainViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:flipInterval="30"
+        android:persistentDrawingCache="animation" />
+
+    <ImageView
+        android:id="@+id/iv_cursor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="matrix"
+        android:src="@drawable/main_fragment_cursor3" />
+    <LinearLayout
+        android:background="#eeeeee"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <!--<TextView-->
+            <!--android:layout_marginTop="@dimen/main_bottom_top"-->
+            <!--android:layout_marginBottom="@dimen/main_bottom_top"-->
+            <!--android:layout_marginStart="@dimen/main_bottom_margin"-->
+            <!--android:layout_marginEnd="@dimen/main_bottom_margin"-->
+            <!--android:id="@+id/tv_guid1"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1.0"-->
+            <!--android:gravity="center"-->
+            <!--android:background="@drawable/begin_record2"-->
+            <!--android:textSize="18sp" />-->
+
+        <TextView
+            android:layout_marginTop="@dimen/main_bottom_top"
+            android:layout_marginBottom="@dimen/main_bottom_top"
+            android:layout_marginStart="@dimen/main_bottom_margin"
+            android:layout_marginEnd="@dimen/main_bottom_margin"
+            android:id="@+id/tv_guid2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:background="@drawable/begin_record3"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_marginTop="@dimen/main_bottom_top"
+            android:layout_marginBottom="@dimen/main_bottom_top"
+           android:layout_marginStart="@dimen/main_bottom_margin"
+            android:layout_marginEnd="@dimen/main_bottom_margin"
+            android:id="@+id/tv_guid3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:background="@drawable/card_setting"
+            android:textSize="18sp" />
+
+        <!--<TextView-->
+            <!--android:id="@+id/tv_guid4"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1.0"-->
+            <!--android:gravity="center"-->
+            <!--android:text="特性4"-->
+            <!--android:textSize="18sp" />-->
+    </LinearLayout>
+
+</LinearLayout>

@@ -3,18 +3,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    <ListView
+        android:id="@+id/lv_context"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ll_btn">
+    </ListView>
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/tv_context"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/ll_btn"/>
+        android:layout_below="@+id/ll_btn"
+        />
 
     <LinearLayout
         android:id="@+id/ll_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+        >
 
         <Button
             android:id="@+id/btn_continue_read"

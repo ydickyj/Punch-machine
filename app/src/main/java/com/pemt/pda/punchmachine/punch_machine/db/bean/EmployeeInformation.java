@@ -29,6 +29,10 @@ public class EmployeeInformation implements Serializable {
     @DatabaseField
     private String  RFID_NO;            //RFID编号
 
+    @DatabaseField
+    private String  JOB;                 //职位
+
+
     public int getId() {
         return id;
     }
@@ -67,5 +71,13 @@ public class EmployeeInformation implements Serializable {
 
     public void setRFID_NO(String RFID_NO) {
         this.RFID_NO = RFID_NO;
+    }
+
+    public String getJOB() {
+        return JOB;
+    }
+
+    public void setJOB(String JOB) {
+        this.JOB = JOB;
     }
 }

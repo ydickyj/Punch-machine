@@ -12,6 +12,8 @@
 
     <string name="scanner_switch">Scanner Switch</string>
     <string name="scanner_button">Scanner Button</string>
+    <string name="list_item">人员</string>
+    <string name="list_item_position">职位</string>
 
     <string-array name="type">
         <item>ESAM</item>

@@ -16,10 +16,20 @@ public class AppData implements Serializable {
     private int id;
 
     @DatabaseField
-    private String NAME;         //姓名
+    private String NAME;                //姓名
 
     @DatabaseField
-    private String  RECORD_TIME;         //记录时间
+    private String RECORD_TIME;        //记录时间
+
+    @DatabaseField
+    private String OFFICE_LOCATION;    //记录地点
+
+    @DatabaseField
+    private String DEPARTMENT;         //部门
+
+    @DatabaseField
+    private String JOB;                //职位
+
 
     public int getId() {
         return id;
@@ -43,5 +53,29 @@ public class AppData implements Serializable {
 
     public void setRECORD_TIME(String RECORD_TIME) {
         this.RECORD_TIME = RECORD_TIME;
+    }
+
+    public String getJOB() {
+        return JOB;
+    }
+
+    public void setJOB(String JOB) {
+        this.JOB = JOB;
+    }
+
+    public String getOFFICE_LOCATION() {
+        return OFFICE_LOCATION;
+    }
+
+    public void setOFFICE_LOCATION(String OFFICE_LOCATION) {
+        this.OFFICE_LOCATION = OFFICE_LOCATION;
+    }
+
+    public String getDEPARTMENT() {
+        return DEPARTMENT;
+    }
+
+    public void setDEPARTMENT(String DEPARTMENT) {
+        this.DEPARTMENT = DEPARTMENT;
     }
 }
