@@ -219,55 +219,6 @@ public class MainActivity extends Fragment {
         logger.error("线程开启");
     }
 
-//    分析扫描结果数据
-    @UiThread
-    void checkSum(String result) {
-        String name = null;
-        String job = null;
-        String department = null;
-        SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault());
-        String date = sDateFormat.format(new java.util.Date());
-        AppData newAppData = new AppData();
-        logger.error("结果：{}", result.substring(1, result.length() - 1));
-//        记录缓冲区
-        if (listEmployInfo.size() != 0 && listEmployInfo != null) {
-            for (int i = 0; i < listEmployInfo.size(); i++) {
-                if (Objects.equals(((EmployeeInformation) (listEmployInfo.get(i))).getRFID_NO(), result.substring(1, result.length() - 1))) {
-                    EmployeeInformation dataCache = (EmployeeInformation) (listEmployInfo.get(i));
-                    name = dataCache.getNAME();
-                    job = dataCache.getJOB();
-                    department = dataCache.getDEPARTMENT();
-                }
-            }
-        }
-        if (name == null) {
-            logger.error("员工不存在");
-        } else {
-            if (campareTime(sDateFormat, name)) {
-                newAppData.setNAME(name);
-                newAppData.setRECORD_TIME(date);
-                newAppData.setJOB(job);
-                newAppData.setDEPARTMENT(department);
-                newAppData.setOFFICE_LOCATION(officeLocation);
-                try {
-                    Calendar calendar = Calendar.getInstance();
-                    newDao = sqLiteOpenHelper.getDao(AppData.class, calendar);
-                    mAppList.add(newAppData);
-                    newDao.create(newAppData);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                mBaseAdapter.notifyDataSetChanged();
-                txtToSpeech.speak(name + " 已打卡", TextToSpeech.QUEUE_FLUSH, null);
-                lvContext.setSelection(mAppList.size());
-                String lastResult = name + " " + date + " 已打卡";
-                appendText(lastResult + "\n\n");
-            } else {
-                logger.error("不需要频繁打卡");
-            }
-        }
-
-    }
 
 //    是否频繁打卡判断
     private boolean campareTime(SimpleDateFormat sDateFormat, String name) {
@@ -332,27 +283,48 @@ public class MainActivity extends Fragment {
                             } else {
                                 String result = new String(frame).trim();
                                 logger.debug("frame:{}", result);
-
                                 if ((result.charAt(0) & 0xff) == (command & 0xff)) {
                                     if (command != CONTINUE_CMD[0]) {
                                         logger.error("结束的标志：{}", command);
                                         if (!Objects.equals(result, "Q")) {
-                                            logger.error("来过1");
-                                            checkSum(result);
+                                            //读取成功
+                                            String name = null;
+                                            String job = null;
+                                            String department = null;
+                                            SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault());
+                                            String date = sDateFormat.format(new java.util.Date());
+                                            AppData newAppData = new AppData();
+                                            logger.error("结果：{}", result.substring(1, result.length() - 1));
+                                            if (listEmployInfo.size() != 0 && listEmployInfo != null) {
+                                                for (int i = 0; i < listEmployInfo.size(); i++) {
+                                                    if (Objects.equals(((EmployeeInformation) (listEmployInfo.get(i))).getRFID_NO(), result.substring(1, result.length() - 1))) {
+                                                        EmployeeInformation dataCache = (EmployeeInformation) (listEmployInfo.get(i));
+                                                        name = dataCache.getNAME();
+                                                        job = dataCache.getJOB();
+                                                        department = dataCache.getDEPARTMENT();
+                                                    }
+                                                }
+                                            }
+                                            if (name == null) {
+                                                logger.error("员工不存在");
+                                            } else {
+                                                if (campareTime(sDateFormat, name)) {
+                                                    newAppData.setNAME(name);
+                                                    newAppData.setRECORD_TIME(date);
+                                                    newAppData.setJOB(job);
+                                                    newAppData.setDEPARTMENT(department);
+                                                    newAppData.setOFFICE_LOCATION(officeLocation);
+                                                    recordRightResult(newAppData);
+                                                } else {
+                                                    logger.error("不需要频繁打卡");
+                                                }
+                                            }
                                         }
                                         command = 0;
-                                        reset();
-                                        needStop = true;
+//                                        reset();
+//                                        needStop = true;
                                         //加入循环方法
-                                        logger.error("来过2");
                                         circularProcess();
-                                    } else {
-                                        logger.error("继续的标志：{}", command);
-                                        Thread.sleep(200);
-                                        if (result.length() > 1) {
-                                            appendText(result + "\n");
-                                        }
-                                        baseDevice.write(CONTINUE_CMD);
                                     }
                                 } else {
                                     logger.error("COMMAND NOT MATCH:" + result);
@@ -371,6 +343,23 @@ public class MainActivity extends Fragment {
                 }
             }
         }
+    }
+
+    @UiThread
+     void recordRightResult(AppData appData) {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            newDao = sqLiteOpenHelper.getDao(AppData.class, calendar);
+            mAppList.add(appData);
+            newDao.create(appData);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        mBaseAdapter.notifyDataSetChanged();
+        txtToSpeech.speak(appData.getNAME() + " 已打卡", TextToSpeech.QUEUE_FLUSH, null);
+        lvContext.setSelection(mAppList.size());
+//        String lastResult = name + " " + date + " 已打卡";
+//        appendText(lastResult + "\n\n");
     }
 }
 
