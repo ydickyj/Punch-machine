@@ -14,6 +14,7 @@
     <string name="scanner_button">Scanner Button</string>
     <string name="list_item">人员</string>
     <string name="list_item_position">职位</string>
+    <string name="punch_start">开启RFID打卡模式</string>
 
     <string-array name="type">
         <item>ESAM</item>

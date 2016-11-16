@@ -14,8 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pemt.pda.punchmachine.punch_machine.adapter.MyFragmentPagerAdapter;
-import com.pemt.pda.punchmachine.punch_machine.fragment.ButtonFragment;
-import com.pemt.pda.punchmachine.punch_machine.fragment.TestFragment;
 
 import java.util.ArrayList;
 
@@ -51,15 +49,10 @@ public class MainFragment extends FragmentActivity {
      * 初始化标签名
      */
     public void InitTextView() {
-//        view1 = (TextView) findViewById(R.id.tv_guid1);
+        view1 = (TextView) findViewById(R.id.tv_guid1);
         view2 = (TextView) findViewById(R.id.tv_guid2);
-        view3 = (TextView) findViewById(R.id.tv_guid3);
-//        view4 = (TextView) findViewById(R.id.tv_guid4);
-
-//        view1.setOnClickListener(new txListener(0));
-        view2.setOnClickListener(new txListener(0));
-        view3.setOnClickListener(new txListener(1));
-//        view4.setOnClickListener(new txListener(3));
+        view1.setOnClickListener(new txListener(0));
+        view2.setOnClickListener(new txListener(1));
     }
 
     /*
@@ -86,21 +79,16 @@ public class MainFragment extends FragmentActivity {
     public void InitViewPager() {
         mPager = (ViewPager) findViewById(R.id.viewpager);
         fragmentList = new ArrayList<Fragment>();
-        Fragment btFragment = new ButtonFragment();
-        Fragment secondFragment = TestFragment.newInstance("this is second fragment");
-//        Fragment thirdFragment = TestFragment.newInstance("this is third fragment");
-//        Fragment fourthFragment = TestFragment.newInstance("this is fourth fragment");
-        Fragment fiveFragment = new MainActivity_();
-//        fragmentList.add(btFragment);
-        fragmentList.add(fiveFragment);
-        fragmentList.add(secondFragment);
-//        fragmentList.add(thirdFragment);
-
+        Fragment administratorFragment = new AdministratorFragment_();
+        Fragment mainFragment = new MainActivity_();
+        fragmentList.add(mainFragment);
+        fragmentList.add(administratorFragment);
 
         //给ViewPager设置适配器
         mPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(), fragmentList));
+        mPager.addOnPageChangeListener(new MyOnPageChangeListener());//页面变化时的监听器
         mPager.setCurrentItem(0);//设置当前显示标签页为第一页
-        mPager.setOnPageChangeListener(new MyOnPageChangeListener());//页面变化时的监听器
+        view1.setBackground(getDrawable(R.drawable.begin_record_pressed));
     }
 
     public class txListener implements View.OnClickListener {
@@ -114,6 +102,7 @@ public class MainFragment extends FragmentActivity {
         public void onClick(View v) {
             // TODO Auto-generated method stub
             mPager.setCurrentItem(index);
+
         }
     }
 
@@ -140,6 +129,13 @@ public class MainFragment extends FragmentActivity {
             animation.setFillAfter(true);//动画终止时停留在最后一帧，不然会回到没有执行前的状态
             animation.setDuration(200);//动画持续时间0.2秒
             image.startAnimation(animation);//是用ImageView来显示动画的
+            switch (arg0) {
+                case 0:
+                    view1.setBackground(getDrawable(R.drawable.begin_record_pressed));
+                    break;
+                case 1:
+                    view1.setBackground(getDrawable(R.drawable.begin_record3));
+            }
             int i = currIndex + 1;
 //            Toast.makeText(MainFragment.this, "您选择了第" + i + "个页卡", Toast.LENGTH_SHORT).show();
         }

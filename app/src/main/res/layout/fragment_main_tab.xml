@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#eeeeee"
+    android:background="#d9e3c1"
     android:orientation="vertical">
 
     <com.pemt.pda.punchmachine.punch_machine.adapter.MainViewPager
@@ -15,13 +15,13 @@
     <ImageView
         android:id="@+id/iv_cursor"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="1dp"
         android:scaleType="matrix"
         android:src="@drawable/main_fragment_cursor3" />
     <LinearLayout
-        android:background="#eeeeee"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#eeeeee"
         android:orientation="horizontal">
 
 
@@ -39,29 +39,29 @@
             <!--android:textSize="18sp" />-->
 
         <TextView
-            android:layout_marginTop="@dimen/main_bottom_top"
-            android:layout_marginBottom="@dimen/main_bottom_top"
-            android:layout_marginStart="@dimen/main_bottom_margin"
-            android:layout_marginEnd="@dimen/main_bottom_margin"
-            android:id="@+id/tv_guid2"
+            android:id="@+id/tv_guid1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/main_bottom_top"
+            android:layout_marginEnd="@dimen/main_bottom_margin"
+            android:layout_marginStart="@dimen/main_bottom_margin"
+            android:layout_marginTop="@dimen/main_bottom_top"
             android:layout_weight="1.0"
-            android:gravity="center"
             android:background="@drawable/begin_record3"
+            android:gravity="center"
             android:textSize="18sp" />
 
         <TextView
-            android:layout_marginTop="@dimen/main_bottom_top"
-            android:layout_marginBottom="@dimen/main_bottom_top"
-           android:layout_marginStart="@dimen/main_bottom_margin"
-            android:layout_marginEnd="@dimen/main_bottom_margin"
-            android:id="@+id/tv_guid3"
+            android:id="@+id/tv_guid2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/main_bottom_top"
+            android:layout_marginEnd="@dimen/main_bottom_margin"
+            android:layout_marginStart="@dimen/main_bottom_margin"
+            android:layout_marginTop="@dimen/main_bottom_top"
             android:layout_weight="1.0"
-            android:gravity="center"
             android:background="@drawable/card_setting"
+            android:gravity="center"
             android:textSize="18sp" />
 
         <!--<TextView-->

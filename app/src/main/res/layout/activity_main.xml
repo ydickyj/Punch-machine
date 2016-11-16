@@ -2,47 +2,51 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#eeeeee"
     android:orientation="vertical">
     <ListView
         android:id="@+id/lv_context"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/ll_btn">
+        android:layout_below="@+id/blue_line">
     </ListView>
 
     <TextView
-        android:visibility="gone"
         android:id="@+id/tv_context"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/ll_btn"
+        android:visibility="gone"
         />
 
     <LinearLayout
         android:id="@+id/ll_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
         >
 
-        <Button
-            android:id="@+id/btn_continue_read"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/continue_read"/>
-
-        <Button
+        <TextView
             android:id="@+id/btn_single_read"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/single_read"/>
+            android:text="@string/punch_start" />
 
-        <Button
-            android:id="@+id/btn_version_read"
+        <Switch
+            android:id="@+id/switch_single_read"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/version_read"/>
+            android:layout_height="wrap_content" />
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/blue_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/ll_btn"
+        android:layout_margin="10dp"
+        android:background="@color/blueAndWhite" />
+
 </RelativeLayout>

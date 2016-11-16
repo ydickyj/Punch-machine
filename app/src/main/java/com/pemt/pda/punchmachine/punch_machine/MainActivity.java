@@ -13,11 +13,12 @@ import android.media.MediaPlayer;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
 import android.text.method.LinkMovementMethod;
-import android.view.View;
-import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.pemt.pda.punchmachine.punch_machine.adapter.MyBaseAdapter;
@@ -29,34 +30,38 @@ import com.pemt.pda.punchmachine.punch_machine.jna.DeviceInterface;
 import com.pemt.pda.punchmachine.punch_machine.jna.RFIDDevice;
 import com.pemt.pda.punchmachine.punch_machine.jna.RFIDFilter;
 import com.pemt.pda.punchmachine.punch_machine.jna.Utils;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.nio.ByteBuffer;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
 @EFragment(R.layout.activity_main)
 public class MainActivity extends Fragment {
-    private static Logger logger = LoggerFactory.getLogger(MainActivity_.class);
     private static final byte[] SINGLE_CMD = {'Q', 0x0D};
     private static final byte[] CONTINUE_CMD = {'U', 0x0D};
-    private PDASqliteOpenHelper sqLiteOpenHelper = PdaApplication.getSqliteOpenHelper();
+    private static Logger logger = LoggerFactory.getLogger(MainActivity_.class);
     @ViewById
     TextView tvContext;
     @ViewById
-    Button btnSingleRead;
+    Switch switchSingleRead;
     @ViewById
     ListView lvContext;
+    MyBaseAdapter mBaseAdapter;
+    private PDASqliteOpenHelper sqLiteOpenHelper = PdaApplication.getSqliteOpenHelper();
     private RFIDDevice device = null;
     private char command = 0;
     private byte[] toSend;
@@ -65,10 +70,10 @@ public class MainActivity extends Fragment {
     private Dao employeeInfoDao;
     private List listEmployInfo = null;
     private ArrayList<AppData> mAppList = new ArrayList<>();
-    MyBaseAdapter mBaseAdapter;
     // 实例并初始化TTS对象
     private TextToSpeech txtToSpeech;
     private String officeLocation = "卫东龙商务大厦";
+
     private void initEmployeeInfo() {
         Calendar calendar = Calendar.getInstance();
         try {
@@ -81,7 +86,7 @@ public class MainActivity extends Fragment {
             newEmpInfo.setDEPARTMENT("研发部");
             newEmpInfo.setNAME("杨杰");
             newEmpInfo.setJOB("软件开发工程师");
-            newEmpInfo.setRFID_NO("3400110000100033450875241100A994");
+            newEmpInfo.setRFID_NO("3000E2003098060700601090AA55610");
             listEmpInfo.add(newEmpInfo);
             newEmpInfo = new EmployeeInformation();
             newEmpInfo.setDEPARTMENT("研发部");
@@ -134,11 +139,10 @@ public class MainActivity extends Fragment {
         nMyAdapter.setListView(lvContext);
         lvContext.setDivider(null);
         lvContext.setAdapter(nMyAdapter);
-        btnSingleRead.setOnClickListener(new View.OnClickListener() {
+        switchSingleRead.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                if (btnSingleRead.getText().equals(getResources().getText(R.string.single_read))) {
-                    btnSingleRead.setText(R.string.stop_read);
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
                     toSend = SINGLE_CMD;
                     try {
                         device = new RFIDDevice();
@@ -170,17 +174,12 @@ public class MainActivity extends Fragment {
     @UiThread
     void reset() {
         logger.error("reset");
-        if (readThread != null) {
-            readThread.needStop = true;
-            readThread = null;
-        }
+
         command = 0;
         if (device != null) {
             device.close();
             device = null;
         }
-        btnSingleRead.setEnabled(true);
-        btnSingleRead.setText(R.string.single_read);
     }
 
     @UiThread
@@ -204,23 +203,30 @@ public class MainActivity extends Fragment {
     }
 
 
-//    重复开启线程
+    //    重复开启线程
     @UiThread
     void circularProcess() {
-        toSend = SINGLE_CMD;
-        try {
-            device = new RFIDDevice();
-            device.open();
-            readThread = new ReadThread();
-            readThread.start();
-        } catch (Exception e) {
-            logger.error("", e);
+        if (readThread != null) {
+            if (readThread.needStop) {
+                logger.error("线程已停止");
+            } else {
+                toSend = SINGLE_CMD;
+                try {
+                    device = new RFIDDevice();
+                    device.open();
+                    readThread = new ReadThread();
+                    readThread.start();
+                } catch (Exception e) {
+                    logger.error("", e);
+                }
+                logger.error("线程开启");
+            }
         }
-        logger.error("线程开启");
+
     }
 
 
-//    是否频繁打卡判断
+    //    是否频繁打卡判断
     private boolean campareTime(SimpleDateFormat sDateFormat, String name) {
         java.util.Date d1 = null;
         java.util.Date d2 = null;
@@ -235,7 +241,9 @@ public class MainActivity extends Fragment {
             } else {
                 date = appDate.getRECORD_TIME();
             }
-            d1 = sDateFormat.parse(sDateFormat.format(new java.util.Date()));
+            Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+            logger.error("之前记录时间：{},当前记录时间：{}", date, sDateFormat.format(curDate));
+            d1 = sDateFormat.parse(sDateFormat.format(curDate));
             d2 = sDateFormat.parse(date);
         } catch (ParseException | SQLException e) {
             e.printStackTrace();
@@ -244,13 +252,32 @@ public class MainActivity extends Fragment {
         long day = diff / (24 * 60 * 60 * 1000);
         long hour = (diff / (60 * 60 * 1000) - day * 24);
         long min = ((diff / (60 * 1000)) - day * 24 * 60 - hour * 60);
-
+        logger.error("比较完成");
         return min >= 1;
+    }
+
+    @UiThread
+    void recordRightResult(AppData appData) {
+        mAppList.add(appData);
+        try {
+            Calendar calendar = Calendar.getInstance();
+            newDao = sqLiteOpenHelper.getDao(AppData.class, calendar);
+            newDao.create(appData);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        mBaseAdapter.notifyDataSetChanged();
+        lvContext.setSelection(mAppList.size());
+        txtToSpeech.speak(appData.getNAME() + " 已打卡", TextToSpeech.QUEUE_FLUSH, null);
+
+//        String lastResult = name + " " + date + " 已打卡";
+//        appendText(lastResult + "\n\n");
     }
 
     //  监听线程定义
     private class ReadThread extends Thread {
         boolean needStop = false;
+
         @Override
         public void run() {
             ByteBuffer buffer = ByteBuffer.allocate(2048);
@@ -291,7 +318,7 @@ public class MainActivity extends Fragment {
                                             String name = null;
                                             String job = null;
                                             String department = null;
-                                            SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault());
+                                            SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
                                             String date = sDateFormat.format(new java.util.Date());
                                             AppData newAppData = new AppData();
                                             logger.error("结果：{}", result.substring(1, result.length() - 1));
@@ -324,42 +351,28 @@ public class MainActivity extends Fragment {
 //                                        reset();
 //                                        needStop = true;
                                         //加入循环方法
-                                        circularProcess();
+
                                     }
                                 } else {
                                     logger.error("COMMAND NOT MATCH:" + result);
-                                    appendText(result + "\n");
-                                    reset();
-                                    needStop = true;
+//                                    appendText(result + "\n");
+//                                    reset();
+//                                    needStop = true;
                                 }
                             }
                         }
                     } else {
                         Thread.sleep(100);
+
                     }
                 } catch (Exception e) {
                     logger.error("", e);
                     needStop = true;
                 }
-            }
-        }
-    }
 
-    @UiThread
-     void recordRightResult(AppData appData) {
-        try {
-            Calendar calendar = Calendar.getInstance();
-            newDao = sqLiteOpenHelper.getDao(AppData.class, calendar);
-            mAppList.add(appData);
-            newDao.create(appData);
-        } catch (SQLException e) {
-            e.printStackTrace();
+            }
+            circularProcess();
         }
-        mBaseAdapter.notifyDataSetChanged();
-        txtToSpeech.speak(appData.getNAME() + " 已打卡", TextToSpeech.QUEUE_FLUSH, null);
-        lvContext.setSelection(mAppList.size());
-//        String lastResult = name + " " + date + " 已打卡";
-//        appendText(lastResult + "\n\n");
     }
 }
 
