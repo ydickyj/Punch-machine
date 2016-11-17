@@ -9,12 +9,14 @@ package com.pemt.pda.punchmachine.punch_machine;
  */
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.ViewById;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,10 +40,12 @@ public class AdministratorFragment extends Fragment {
 //        nMyAdapter.setListView(lvContext);
         lvContext.setDivider(null);
         lvContext.setAdapter(mBaseAdapter);
+
     }
 
     @AfterViews
     void afterView() {
+
         logger.error("afterView");
         Map<String, Object> listem = new HashMap<String, Object>();
         listem.put("tvContext", "员工管理");
@@ -56,6 +60,16 @@ public class AdministratorFragment extends Fragment {
         initView();
     }
 
+
+    @ItemClick
+    public void lvContext(int position) {
+        final Context newContext = this.getActivity().getApplication().getBaseContext();
+        switch (position) {
+            case 0:
+                startActivity(new Intent(newContext, StaffManagementActivity_.class));
+                break;
+        }
+    }
 
 }
 

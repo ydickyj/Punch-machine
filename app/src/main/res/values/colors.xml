@@ -8,5 +8,5 @@
 
     <color name="paintSecond">#00e3ff</color>
     <color name="clockBackground">#222c36</color>
-
+    <color name="blueBackground">#0288d1</color>
 </resources>
