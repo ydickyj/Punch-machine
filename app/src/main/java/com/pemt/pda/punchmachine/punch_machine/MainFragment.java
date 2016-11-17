@@ -132,9 +132,11 @@ public class MainFragment extends FragmentActivity {
             switch (arg0) {
                 case 0:
                     view1.setBackground(getDrawable(R.drawable.begin_record_pressed));
+                    view2.setBackground(getDrawable(R.drawable.card_setting));
                     break;
                 case 1:
                     view1.setBackground(getDrawable(R.drawable.begin_record3));
+                    view2.setBackground(getDrawable(R.drawable.card_setting_pressed));
             }
             int i = currIndex + 1;
 //            Toast.makeText(MainFragment.this, "您选择了第" + i + "个页卡", Toast.LENGTH_SHORT).show();

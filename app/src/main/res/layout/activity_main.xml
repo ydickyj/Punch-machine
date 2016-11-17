@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#eeeeee"
+
     android:orientation="vertical">
     <ListView
         android:id="@+id/lv_context"
@@ -23,30 +24,40 @@
         android:id="@+id/ll_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
+        android:background="@color/white"
         >
 
-        <TextView
-            android:id="@+id/btn_single_read"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/punch_start" />
+        <LinearLayout
 
-        <Switch
-            android:id="@+id/switch_single_read"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/btn_single_read"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/punch_start" />
+
+            <Switch
+                android:id="@+id/switch_single_read"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
     </LinearLayout>
+
 
     <ImageView
         android:id="@+id/blue_line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/ll_btn"
-        android:layout_margin="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
         android:background="@color/blueAndWhite" />
 
 </RelativeLayout>

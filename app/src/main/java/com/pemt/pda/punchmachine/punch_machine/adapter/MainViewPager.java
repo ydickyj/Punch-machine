@@ -49,7 +49,7 @@ public class MainViewPager extends ViewPager {
             if (h > height) height = h;
         }
 
-        height = finalHeigh * 11 / 12;
+        height = finalHeigh * 580 / 1000;
 
         heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
 

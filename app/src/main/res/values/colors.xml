@@ -5,4 +5,8 @@
     <color name="colorAccent">#FF4081</color>
     <color name="blueAndWhite">#05a8c9</color>
     <color name="black">#000</color>
+
+    <color name="paintSecond">#00e3ff</color>
+    <color name="clockBackground">#222c36</color>
+
 </resources>
