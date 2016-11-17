@@ -1,7 +1,11 @@
 package com.pemt.pda.punchmachine.punch_machine;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -24,7 +28,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by eng005 on 2016/11/17.
+ *
+ * Created dicky on 2016/11/17.
  */
 
 @EActivity(R.layout.activity_staff)
@@ -49,6 +54,13 @@ public class StaffManagementActivity extends Activity {
 //        nMyAdapter.setListView(lvContext);
         lvContext.setDivider(null);
         lvContext.setAdapter(mBaseAdapter);
+
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.add_custom_dialog,
+                (ViewGroup) findViewById(R.id.dialog));
+        new AlertDialog.Builder(this).setTitle("自定义布局").setView(layout)
+                .setPositiveButton("确定", null)
+                .setNegativeButton("取消", null).show();
     }
 
     @AfterViews

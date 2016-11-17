@@ -8,4 +8,6 @@
     <!--选项的高度-->
     <dimen name="main_bottom_top">5dp</dimen>
     <dimen name="list_item_position_text_size">18dp</dimen>
+
+    <dimen name="dialog_with">220dp</dimen>
 </resources>
