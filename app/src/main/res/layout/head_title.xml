@@ -28,8 +28,8 @@
         android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/tv_handle"
-        android:layout_width="65dp"
+        android:id="@+id/tv_edit"
+        android:layout_width="70dp"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"

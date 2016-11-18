@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/black" android:state_pressed="true" />
+    <item android:color="@color/black" android:state_focused="true" />
+    <item android:color="#fff" />
+</selector>
+
+    <!--<item--><!--android:color="hex_color"             //颜色值，#RGB,$ARGB,#RRGGBB,#AARRGGBB--><!--android:state_pressed=["true" | "false"]//是否触摸--><!--android:state_focused=["true" | "false"]//是否获得焦点--><!--android:state_selected=["true" | "false"]//是否被状态--><!--android:state_checkable=["true" | "false"]//是否可选--><!--android:state_checked=["true" | "false"]//是否选中--><!--android:state_enabled=["true" | "false"]//是否可用--><!--android:state_window_focused=["true" | "false"] />//是否窗口聚焦-->
