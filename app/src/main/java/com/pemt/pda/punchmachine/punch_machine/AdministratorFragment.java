@@ -68,6 +68,9 @@ public class AdministratorFragment extends Fragment {
             case 0:
                 startActivity(new Intent(newContext, StaffManagementActivity_.class));
                 break;
+            case 1:
+                startActivity(new Intent(newContext, PunchRecord.class));
+                break;
         }
     }
 

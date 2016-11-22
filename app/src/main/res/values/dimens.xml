@@ -10,4 +10,6 @@
     <dimen name="list_item_position_text_size">18dp</dimen>
 
     <dimen name="dialog_with">230dp</dimen>
+
+    <dimen name="historyscore_tb">10dp</dimen>
 </resources>
