@@ -5,40 +5,134 @@ import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.j256.ormlite.dao.Dao;
+import com.pemt.pda.punchmachine.punch_machine.adapter.PunchRecordAdapter;
+import com.pemt.pda.punchmachine.punch_machine.db.PDASqliteOpenHelper;
+import com.pemt.pda.punchmachine.punch_machine.db.bean.AppData;
 import com.pemt.pda.punchmachine.punch_machine.pages.KCalendar;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.ViewById;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 /**
- * Created by eng005 on 2016/11/21.
  *
+ *  Created by eng005 on 2016/11/21.
  */
 
+@EActivity(R.layout.activity_punch_record)
 public class PunchRecord extends Activity {
-
+    private static Logger logger = LoggerFactory.getLogger(PunchRecord_.class);
+    @ViewById
+    TextView tvEdit;
+    @ViewById
+    ImageView ivBack;
+    @ViewById
+    TextView tvTitle;
+    @ViewById
+    ListView lvContext;
     String date = null;// 设置默认选中的日期  格式为 “2016-11-22” 标准DATE格式
-
     Button bt;
+    PDASqliteOpenHelper sqLiteOpenHelper = PdaApplication.getSqliteOpenHelper();
+    private ArrayList<AppData> mAppList = new ArrayList<>();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
 
-        setContentView(R.layout.activity_punch_record);
+    @AfterViews
+    void afterView() {
+        tvTitle.setText("打卡记录");
+        tvEdit.setVisibility(View.GONE);
         bt = (Button) findViewById(R.id.bt);
         bt.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 new PopupWindows(PunchRecord.this, bt);
             }
         });
+        SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String date = "日期：" + sDateFormat.format(new java.util.Date());
+        bt.setText(date);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        LinearLayout titleView = (LinearLayout) inflater.inflate(R.layout.listview_title_head, null);//得到头部的布局
+        LinearLayout footView = (LinearLayout) inflater.inflate(R.layout.listview_title_foot, null);//得到尾部的布局
+        lvContext.addHeaderView(titleView);
+        lvContext.addFooterView(footView);
+        lvContext.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                if (id < -1) {
+                    // 点击的是headerView或者footerView
+                    Toast.makeText(PunchRecord.this, "点击的是headerView或者footerView", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Toast.makeText(PunchRecord.this, "position:" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Click
+    void ivBack() {
+        onBackPressed();
+    }
+
+    @UiThread
+    void updateDate() {
+        String strDate = "日期：" + date;
+        bt.setText(strDate);
+        databaseQuery();
+    }
+
+    @Background
+    void databaseQuery() {
+        SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        try {
+            Date newDate = sDateFormat.parse(date);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(newDate);
+            Dao newDao = sqLiteOpenHelper.getDao(AppData.class, calendar);
+            mAppList = (ArrayList<AppData>) newDao.queryBuilder().orderBy("ID", true).where().like("RECORD_TIME", "%" + date + "%").query();
+            logger.error("数据长度：{}", mAppList.size());
+            PunchRecordAdapter mAdapter = new PunchRecordAdapter(this, mAppList);
+            loadingData(mAdapter);
+        } catch (ParseException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @UiThread
+    void loadingData(PunchRecordAdapter adapter) {
+        lvContext.setDivider(null);
+        lvContext.setAdapter(adapter);
     }
 
     public class PopupWindows extends PopupWindow {
@@ -152,6 +246,9 @@ public class PunchRecord extends Activity {
                     .setOnClickListener(new View.OnClickListener() {
 
                         public void onClick(View v) {
+                            if (!Objects.equals(date, "") && !Objects.equals(date, "NULL") && date != null) {
+                                updateDate();
+                            }
                             dismiss();
                         }
                     });

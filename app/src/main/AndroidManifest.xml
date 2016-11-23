@@ -52,8 +52,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".ButtonActivity_"/>
-        <activity android:name=".StaffManagementActivity_" />
-        <activity android:name=".PunchRecord" />
+        <activity
+            android:name=".StaffManagementActivity_"
+            android:theme="@style/Transparent" />
+        <activity android:name=".PunchRecord_" />
     </application>
 
 </manifest>

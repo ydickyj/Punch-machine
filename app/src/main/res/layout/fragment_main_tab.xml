@@ -13,11 +13,14 @@
         android:gravity="center">
 
         <com.pemt.pda.punchmachine.punch_machine.pages.ClockView
+            android:id="@+id/clock"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp" />
+
     </LinearLayout>
+
     <com.pemt.pda.punchmachine.punch_machine.adapter.MainViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
@@ -40,17 +43,17 @@
 
 
         <!--<TextView-->
-            <!--android:layout_marginTop="@dimen/main_bottom_top"-->
-            <!--android:layout_marginBottom="@dimen/main_bottom_top"-->
-            <!--android:layout_marginStart="@dimen/main_bottom_margin"-->
-            <!--android:layout_marginEnd="@dimen/main_bottom_margin"-->
-            <!--android:id="@+id/tv_guid1"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="1.0"-->
-            <!--android:gravity="center"-->
-            <!--android:background="@drawable/begin_record2"-->
-            <!--android:textSize="18sp" />-->
+        <!--android:layout_marginTop="@dimen/main_bottom_top"-->
+        <!--android:layout_marginBottom="@dimen/main_bottom_top"-->
+        <!--android:layout_marginStart="@dimen/main_bottom_margin"-->
+        <!--android:layout_marginEnd="@dimen/main_bottom_margin"-->
+        <!--android:id="@+id/tv_guid1"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1.0"-->
+        <!--android:gravity="center"-->
+        <!--android:background="@drawable/begin_record2"-->
+        <!--android:textSize="18sp" />-->
 
         <TextView
             android:id="@+id/tv_guid1"
@@ -79,13 +82,13 @@
             android:textSize="18sp" />
 
         <!--<TextView-->
-            <!--android:id="@+id/tv_guid4"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="1.0"-->
-            <!--android:gravity="center"-->
-            <!--android:text="特性4"-->
-            <!--android:textSize="18sp" />-->
+        <!--android:id="@+id/tv_guid4"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1.0"-->
+        <!--android:gravity="center"-->
+        <!--android:text="特性4"-->
+        <!--android:textSize="18sp" />-->
     </LinearLayout>
 
 </LinearLayout>

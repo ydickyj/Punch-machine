@@ -3,6 +3,7 @@ package com.pemt.pda.punchmachine.punch_machine;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -34,6 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+
 /**
  * Created dicky on 2016/11/17.
  */
@@ -54,18 +56,20 @@ public class StaffManagementActivity extends Activity {
     SimpleAdapter mBaseAdapter;
     SimpleAdapter mEditBaseAdapter;
     DialogInterface staffDialog;
+    Thread newThread;
+    Handler handler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            if (msg.what == 0x123) {
+                lvContext.setVisibility(View.VISIBLE);
+                updateData();
+            }
+        }
+
+        ;
+    };
     private PDASqliteOpenHelper sqLiteOpenHelper = PdaApplication.getSqliteOpenHelper();
     private ArrayList<Map<String, Object>> mAppList = new ArrayList<>();
     private ArrayList<EmployeeInformation> mStaffList = new ArrayList<>();
-
-    private void initView() {
-        mBaseAdapter = new SimpleAdapter(this, mAppList, R.layout.listview_item_staff, new String[]{"tvContext", "tvEngContext", "icon"}, new int[]{R.id.tv_content, R.id.tv_eng_content, R.id.img_icon});
-//        SwingBottomInAnimationAdapter nMyAdapter = new SwingBottomInAnimationAdapter(mBaseAdapter);
-//        nMyAdapter.setListView(lvContext);
-        lvContext.setDivider(null);
-        lvContext.setAdapter(mBaseAdapter);
-        lvContext.setEnabled(false);
-    }
 
     @AfterViews
     void afterView() {
@@ -77,10 +81,21 @@ public class StaffManagementActivity extends Activity {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         logger.error("afterView");
-        mAppList = dataListUpdata(mStaffList);
+        lvContext.setVisibility(View.GONE);
         initView();
+        new MyThread().start();
+    }
+
+    @UiThread
+    void initView() {
+        mBaseAdapter = new SimpleAdapter(this, mAppList, R.layout.listview_item_staff, new String[]{"tvContext", "tvEngContext", "icon"}, new int[]{R.id.tv_content, R.id.tv_eng_content, R.id.img_icon});
+//        SwingBottomInAnimationAdapter nMyAdapter = new SwingBottomInAnimationAdapter(mBaseAdapter);
+//        nMyAdapter.setListView(lvContext);
+        lvContext.setDivider(null);
+        lvContext.setAdapter(mBaseAdapter);
+        lvContext.setEnabled(false);
+        logger.error("initView()");
     }
 
     @Click
@@ -298,6 +313,7 @@ public class StaffManagementActivity extends Activity {
         builder.create().show();
     }
 
+
     private ArrayList<Map<String, Object>> dataListUpdata(ArrayList<EmployeeInformation> staffList) {
         ArrayList<Map<String, Object>> appList = new ArrayList<>();
         if (staffList != null) {
@@ -310,5 +326,44 @@ public class StaffManagementActivity extends Activity {
             }
         }
         return appList;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+
+    @UiThread
+    void updateData() {
+        logger.error("updateData");
+        mBaseAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        logger.error("onDestroy");
+        if (newThread != null) {
+            newThread.interrupt();
+        }
+    }
+
+    class MyThread extends Thread {
+        @Override
+        public void run() {
+            //延迟两秒更新
+            mAppList.clear();
+            mAppList.addAll(dataListUpdata(mStaffList));
+            //延迟两秒更新
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            handler.sendEmptyMessage(0x123);
+        }
     }
 }

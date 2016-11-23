@@ -309,8 +309,9 @@ public class KCalendar extends ViewFlipper implements
                                 && today.getMonth() == calendarDay.getMonth()
                                 && today.getYear() == calendarDay.getYear()) {
                             view.setText("今天");
-                            view.setTextColor(COLOR_TX_WEEK_TITLE);
-                            view.setBackgroundColor(Color.TRANSPARENT);
+                            view.setTextSize(12);
+                            view.setTextColor(getResources().getColor(R.color.white));
+                            view.setBackground(getResources().getDrawable(R.drawable.red_background));
                         } else {
                             view.setTextColor(COLOR_TX_THIS_MONTH_DAY);
                             view.setBackgroundColor(Color.TRANSPARENT);

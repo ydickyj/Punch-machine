@@ -53,7 +53,7 @@ public class MyBaseAdapter extends BaseAdapter {
 //        if (convertView == null) {
             //由于程序锁的条目与病毒扫描内容基本一致，因此重用程序锁的布局
             convertView = mInflater.inflate(R.layout.listview_item, null);
-        mHolder.mHeadPortrait = (ImageView) convertView.findViewById(R.id.head_portrait);
+        mHolder.mHeadPortrait = (ImageView) convertView.findViewById(R.id.start_flag);
             mHolder.mAppNameTV = (TextView) convertView.findViewById(R.id.tv_content);
             mHolder.mRecordTime = (TextView) convertView.findViewById(R.id.tv_time);
         mHolder.mTvJob = (TextView) convertView.findViewById(R.id.tv_position);

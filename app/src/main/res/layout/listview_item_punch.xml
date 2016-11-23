@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/listview_item_selector"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <ImageView
+                android:id="@+id/start_flag"
+                android:layout_width="3dp"
+                android:layout_height="0dp"
+                android:layout_weight="0.3"
+                android:background="@color/greenBackground" />
+
+            <ImageView
+                android:id="@+id/img_icon"
+                android:layout_width="32dp"
+                android:layout_height="0dp"
+                android:layout_weight="0.4"
+                android:background="@drawable/clock_flag"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/end_flag"
+                android:layout_width="3dp"
+                android:layout_height="0dp"
+                android:layout_weight="0.3"
+                android:background="@color/greenBackground" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/info_spot"
+
+                    />
+
+                <TextView
+                    android:id="@+id/tv_record_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="yyyy-MM-dd"
+                    android:textColor="@color/redBackground" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/boy"
+                    android:scaleType="fitCenter" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@id/tv_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="luzhuhong" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/greenBackground" />
+
+                <TextView
+                    android:id="@+id/tv_job_department"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

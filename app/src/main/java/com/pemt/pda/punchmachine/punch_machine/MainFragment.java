@@ -14,18 +14,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pemt.pda.punchmachine.punch_machine.adapter.MyFragmentPagerAdapter;
+import com.pemt.pda.punchmachine.punch_machine.pages.ClockView;
 
 import java.util.ArrayList;
 
 
-
 /**
- *
  * Created by dicky on 2016/11/9.
  */
 
 
 public class MainFragment extends FragmentActivity {
+    private static ClockView mClockView;
     private ViewPager mPager;
     private ArrayList<Fragment> fragmentList;
     private ImageView image;
@@ -34,25 +34,30 @@ public class MainFragment extends FragmentActivity {
     private int bmpW;//横线图片宽度
     private int offset;//图片移动的偏移量
 
+    static public void stopClockRefresh() {
+        mClockView.stopViewRefresh();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_main_tab);
+        mClockView = (ClockView) findViewById(R.id.clock);
         InitTextView();
         InitImage();
         InitViewPager();
     }
 
-
     /*
      * 初始化标签名
      */
     public void InitTextView() {
+
         view1 = (TextView) findViewById(R.id.tv_guid1);
         view2 = (TextView) findViewById(R.id.tv_guid2);
         view1.setOnClickListener(new txListener(0));
         view2.setOnClickListener(new txListener(1));
+
     }
 
     /*
@@ -65,7 +70,7 @@ public class MainFragment extends FragmentActivity {
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         int screenW = dm.widthPixels;
 //        offset = (screenW / 3 - bmpW) / 2;
-        offset = 0 ;
+        offset = 0;
 
         //imgageview设置平移，使下划线平移到初始位置（平移一个offset）
         Matrix matrix = new Matrix();
@@ -88,7 +93,13 @@ public class MainFragment extends FragmentActivity {
         mPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(), fragmentList));
         mPager.addOnPageChangeListener(new MyOnPageChangeListener());//页面变化时的监听器
         mPager.setCurrentItem(0);//设置当前显示标签页为第一页
-        view1.setBackground(getDrawable(R.drawable.begin_record_pressed));
+        view1.setBackground(getResources().getDrawable(R.drawable.begin_record_pressed));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mClockView.startViewRefresh();
     }
 
     public class txListener implements View.OnClickListener {
@@ -131,17 +142,15 @@ public class MainFragment extends FragmentActivity {
             image.startAnimation(animation);//是用ImageView来显示动画的
             switch (arg0) {
                 case 0:
-                    view1.setBackground(getDrawable(R.drawable.begin_record_pressed));
-                    view2.setBackground(getDrawable(R.drawable.card_setting));
+                    view1.setBackground(getResources().getDrawable(R.drawable.begin_record_pressed));
+                    view2.setBackground(getResources().getDrawable(R.drawable.card_setting));
                     break;
                 case 1:
-                    view1.setBackground(getDrawable(R.drawable.begin_record3));
-                    view2.setBackground(getDrawable(R.drawable.card_setting_pressed));
+                    view1.setBackground(getResources().getDrawable(R.drawable.begin_record3));
+                    view2.setBackground(getResources().getDrawable(R.drawable.card_setting_pressed));
             }
             int i = currIndex + 1;
 //            Toast.makeText(MainFragment.this, "您选择了第" + i + "个页卡", Toast.LENGTH_SHORT).show();
         }
     }
-
-
 }

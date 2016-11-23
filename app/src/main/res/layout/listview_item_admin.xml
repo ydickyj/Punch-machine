@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
     android:orientation="vertical">
 
     <LinearLayout
@@ -22,7 +21,8 @@
             android:id="@+id/img_icon"
             android:layout_width="160dp"
             android:layout_height="80dp"
-            android:background="@drawable/personal_management" />
+            android:background="@drawable/personal_management"
+            android:scaleType="centerCrop" />
 
         <RelativeLayout
             android:layout_width="match_parent"

@@ -19,6 +19,8 @@ import java.util.Date;
  */
 public class ClockView extends View {
 
+    private boolean isStop;
+
     private Thread refreshThread;//刷新时间线程
 
     private float refresh_time = 1000;//秒针刷新的时间
@@ -239,7 +241,9 @@ public class ClockView extends View {
                 while (true) {
                     //设置更新界面的刷新时间
                     SystemClock.sleep((long) refresh_time);
-                    postInvalidate();
+                    if (!isStop) {
+                        postInvalidate();
+                    }
                 }
             }
         });
@@ -251,5 +255,13 @@ public class ClockView extends View {
         super.onDetachedFromWindow();
         //停止刷新线程
         refreshThread.interrupt();
+    }
+
+    public void stopViewRefresh() {
+        isStop = true;
+    }
+
+    public void startViewRefresh() {
+        isStop = false;
     }
 }
