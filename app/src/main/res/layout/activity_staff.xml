@@ -17,16 +17,14 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/add_custom" />
 
-
         <Button
             android:id="@+id/add_custom"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="@color/white"
+            android:background="@drawable/bt_bgd"
             android:text="添加新成员"
-            android:textColor="@color/blueBackground"
-            android:textSize="16sp" />
+            android:textColor="@color/white" />
     </RelativeLayout>
 
 </LinearLayout>

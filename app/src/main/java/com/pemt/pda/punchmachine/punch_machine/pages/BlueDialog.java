@@ -175,7 +175,7 @@ public class BlueDialog extends Dialog {
             if (message != null) {
                 ((TextView) layout.findViewById(R.id.message)).setText(message);
             } else {
-                ((TextView) layout.findViewById(R.id.message)).setVisibility(View.GONE);
+//                ((TextView) layout.findViewById(R.id.message)).setVisibility(View.GONE);
             }
             dialog.setContentView(layout);
             return dialog;

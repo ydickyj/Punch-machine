@@ -13,6 +13,7 @@
         android:layout_margin="5dp"
         android:gravity="center"
         android:text="@string/app_name"
+        android:textColor="@color/black"
         android:textSize="24sp" />
 
     <ImageView
@@ -26,10 +27,10 @@
         android:layout_height="wrap_content">
 
         <TextView
-
             android:id="@+id/message"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="@color/black" />
     </LinearLayout>
 
     <LinearLayout
@@ -48,14 +49,16 @@
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="姓名：" />
+                android:text="姓名："
+                android:textColor="@color/black" />
 
             <EditText
                 android:id="@+id/et_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:minWidth="@dimen/dialog_with" />
+                android:minWidth="@dimen/dialog_with"
+                android:textColor="@color/black" />
 
         </LinearLayout>
 
@@ -68,7 +71,8 @@
                 android:id="@+id/tv_job"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="职位：" />
+                android:text="职位："
+                android:textColor="@color/black" />
 
 
             <EditText
@@ -76,7 +80,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:minWidth="@dimen/dialog_with" />
+                android:minWidth="@dimen/dialog_with"
+                android:textColor="@color/black" />
         </LinearLayout>
 
         <LinearLayout
@@ -88,17 +93,20 @@
                 android:id="@+id/tv_job_department"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="部门：" />
+                android:text="部门："
+                android:textColor="@color/black" />
 
             <EditText
                 android:id="@+id/et_job_department"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:minWidth="@dimen/dialog_with" />
+                android:minWidth="@dimen/dialog_with"
+                android:textColor="@color/black" />
         </LinearLayout>
 
         <LinearLayout
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -107,14 +115,16 @@
                 android:id="@+id/tv_job_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="工号：" />
+                android:text="工号："
+                android:textColor="@color/black" />
 
             <EditText
                 android:id="@+id/et_job_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:minWidth="@dimen/dialog_with" />
+                android:minWidth="@dimen/dialog_with"
+                android:textColor="@color/black" />
         </LinearLayout>
 
         <LinearLayout
@@ -126,13 +136,15 @@
                 android:id="@+id/tv_rfid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="RFID：" />
+                android:text="RFID："
+                android:textColor="@color/black" />
 
             <EditText
                 android:id="@+id/et_rfid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:minWidth="@dimen/dialog_with" />
+                android:minWidth="@dimen/dialog_with"
+                android:textColor="@color/black" />
         </LinearLayout>
     </LinearLayout>
 

@@ -12,8 +12,8 @@
         android:layout_height="55dp"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/head_title"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/bt_bgd"
         android:text="请选择打卡日期"
@@ -24,7 +24,17 @@
         android:id="@+id/lv_context"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/bt">
-
+        android:layout_above="@+id/btn_export"
+        android:layout_below="@+id/bt"
+        android:layout_marginTop="-25dp">
     </ListView>
+
+    <Button
+        android:id="@+id/btn_export"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bt_bgd"
+        android:text="导出打卡记录"
+        android:textColor="@color/white" />
 </RelativeLayout>

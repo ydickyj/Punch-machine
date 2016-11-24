@@ -49,16 +49,9 @@ public class PunchRecordAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-//        若listview向下滚动，则在listview生成item的view的时候，将view都储存进一个集合
-        if (position + 1 > viewlist.size()) {
+        if (convertView == null) {
             convertView = mInflater.inflate(R.layout.listview_item_punch, null);
-            viewlist.add(convertView);
         }
-        //若listview往回滚动，则将集合中存储好的view赋值给convertview。
-        else {
-            convertView = viewlist.get(position);
-        }
-
         ViewHolder mHolder = new ViewHolder();
         mHolder.mStartFlag = (ImageView) convertView.findViewById(R.id.start_flag);
         mHolder.mEndFlag = (ImageView) convertView.findViewById(R.id.end_flag);

@@ -2,6 +2,7 @@ package com.pemt.pda.punchmachine.punch_machine;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -22,6 +23,7 @@ import com.j256.ormlite.dao.Dao;
 import com.pemt.pda.punchmachine.punch_machine.adapter.PunchRecordAdapter;
 import com.pemt.pda.punchmachine.punch_machine.db.PDASqliteOpenHelper;
 import com.pemt.pda.punchmachine.punch_machine.db.bean.AppData;
+import com.pemt.pda.punchmachine.punch_machine.pages.BlueDialog;
 import com.pemt.pda.punchmachine.punch_machine.pages.KCalendar;
 
 import org.androidannotations.annotations.AfterViews;
@@ -42,10 +44,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Random;
 
 /**
- *
- *  Created by eng005 on 2016/11/21.
+ * Created by eng005 on 2016/11/21.
  */
 
 @EActivity(R.layout.activity_punch_record)
@@ -59,6 +61,8 @@ public class PunchRecord extends Activity {
     TextView tvTitle;
     @ViewById
     ListView lvContext;
+    @ViewById
+    Button btnExport;
     String date = null;// 设置默认选中的日期  格式为 “2016-11-22” 标准DATE格式
     Button bt;
     PDASqliteOpenHelper sqLiteOpenHelper = PdaApplication.getSqliteOpenHelper();
@@ -79,8 +83,9 @@ public class PunchRecord extends Activity {
             }
         });
         SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        String date = "日期：" + sDateFormat.format(new java.util.Date());
-        bt.setText(date);
+        date = sDateFormat.format(new java.util.Date());
+        String btnDate = "日期：" + date;
+        bt.setText(btnDate);
         LayoutInflater inflater = LayoutInflater.from(this);
         LinearLayout titleView = (LinearLayout) inflater.inflate(R.layout.listview_title_head, null);//得到头部的布局
         LinearLayout footView = (LinearLayout) inflater.inflate(R.layout.listview_title_foot, null);//得到尾部的布局
@@ -90,7 +95,7 @@ public class PunchRecord extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                if (id < -1) {
+                if (id <= -1) {
                     // 点击的是headerView或者footerView
                     Toast.makeText(PunchRecord.this, "点击的是headerView或者footerView", Toast.LENGTH_SHORT).show();
                     return;
@@ -98,6 +103,7 @@ public class PunchRecord extends Activity {
                 Toast.makeText(PunchRecord.this, "position:" + position, Toast.LENGTH_SHORT).show();
             }
         });
+        updateDate();
     }
 
     @Click
@@ -133,20 +139,63 @@ public class PunchRecord extends Activity {
     void loadingData(PunchRecordAdapter adapter) {
         lvContext.setDivider(null);
         lvContext.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
+
+    @Click
+    void btnExport() {
+        final Random random = new Random(System.currentTimeMillis());
+        final Context mContext = this.getBaseContext();
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View layout = layoutInflater.inflate(R.layout.export_record_dialog, null);
+        BlueDialog.Builder builder = new BlueDialog.Builder(this).setContentView(layout);
+        builder.setTitle("导出打卡记录");
+        builder.setPositiveButton("导出本日", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        LayoutInflater mLayoutInflater = LayoutInflater.from(PunchRecord.this);
+                        View mLayout = mLayoutInflater.inflate(R.layout.export_loading_dialog, null);
+                        SpringProgressView mSpv = (SpringProgressView) mLayout.findViewById(R.id.spv);
+                        BlueDialog.Builder mBuilder = new BlueDialog.Builder(PunchRecord.this).setContentView(mLayout);
+                        mBuilder.setTitle("导出记录中");
+                        mBuilder.create().show();
+                        mSpv.setMaxCount(50000.0f);
+                        for (int i = 0; i < 5; i++) {
+                            try {
+                                Thread.sleep(10000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            mSpv.setCurrentCount(i * 5000);
+                        }
+
+
+                    }
+                    //设置你的操作事项
+                }
+        );
+        builder.setNegativeButton("导出本月",
+                new android.content.DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        builder.create().show();
+    }
+
 
     public class PopupWindows extends PopupWindow {
 
-        public PopupWindows(Context mContext, View parent) {
+        public PopupWindows(final Context mContext, View parent) {
 
-            View view = View.inflate(mContext, R.layout.popupwindow_calendar,
+            final View view = View.inflate(mContext, R.layout.popupwindow_calendar,
                     null);
             view.startAnimation(AnimationUtils.loadAnimation(mContext,
                     R.anim.fade_in));
             LinearLayout ll_popup = (LinearLayout) view
                     .findViewById(R.id.ll_popup);
-            ll_popup.startAnimation(AnimationUtils.loadAnimation(mContext,
-                    R.anim.push_bottom_in_1));
+//            ll_popup.startAnimation(AnimationUtils.loadAnimation(mContext,
+//                    R.anim.push_bottom_in_1));
 
             setWidth(LinearLayout.LayoutParams.FILL_PARENT);
             setHeight(LinearLayout.LayoutParams.FILL_PARENT);
@@ -248,6 +297,13 @@ public class PunchRecord extends Activity {
                         public void onClick(View v) {
                             if (!Objects.equals(date, "") && !Objects.equals(date, "NULL") && date != null) {
                                 updateDate();
+                            }
+                            view.startAnimation(AnimationUtils.loadAnimation(mContext,
+                                    R.anim.fade_out));
+                            try {
+                                Thread.sleep(200);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
                             }
                             dismiss();
                         }
