@@ -58,7 +58,7 @@ public class MainActivity extends Fragment {
     TextView tvContext;
     @ViewById
     Switch switchSingleRead;
-    @ViewById
+    @ViewById(R.id.lv_context)
     ListView lvContext;
     MyBaseAdapter mBaseAdapter;
     private PDASqliteOpenHelper sqLiteOpenHelper = PdaApplication.getSqliteOpenHelper();
@@ -84,29 +84,30 @@ public class MainActivity extends Fragment {
             ArrayList<EmployeeInformation> listEmpInfo = new ArrayList<>();
             EmployeeInformation newEmpInfo = new EmployeeInformation();
             newEmpInfo.setDEPARTMENT("研发部");
-            newEmpInfo.setNAME("杨杰");
-            newEmpInfo.setJOB("软件开发工程师");
+            newEmpInfo.setNAME("dicky");
+            newEmpInfo.setJOB("安卓软件开发工程师");
             newEmpInfo.setRFID_NO("3000E2003098060700601090AA55610");
             listEmpInfo.add(newEmpInfo);
             newEmpInfo = new EmployeeInformation();
             newEmpInfo.setDEPARTMENT("研发部");
-            newEmpInfo.setNAME("陆祖红");
+            newEmpInfo.setNAME("陆师");
             newEmpInfo.setJOB("软件开发工程师");
             newEmpInfo.setRFID_NO("3000E200513631180158256012E8CB7");
             listEmpInfo.add(newEmpInfo);
             newEmpInfo = new EmployeeInformation();
             newEmpInfo.setDEPARTMENT("研发部");
-            newEmpInfo.setNAME("马燕芬");
+            newEmpInfo.setNAME("马小姐");
             newEmpInfo.setRFID_NO("3000E2005136311801412560132CCDA");
             newEmpInfo.setJOB("项目专员");
             listEmpInfo.add(newEmpInfo);
+            newEmpInfo = new EmployeeInformation();
+            newEmpInfo.setDEPARTMENT("研发部");
+            newEmpInfo.setNAME("李小姐");
+            newEmpInfo.setRFID_NO("3000E2003098060700601030B2C4C5D");
+            newEmpInfo.setJOB("项目专员");
+            listEmpInfo.add(newEmpInfo);
             employeeInfoDao.create(listEmpInfo);
-            List<String> newList = sqLiteOpenHelper.queryAllTableName();
-            if (newList != null) {
-                for (int i = 0; i < newList.size(); i++) {
-                    sqLiteOpenHelper.ExportToCSV(newList.get(i), newList.get(i) + ".csv");
-                }
-            }
+
             listEmployInfo = employeeInfoDao.queryForAll();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -174,7 +175,6 @@ public class MainActivity extends Fragment {
     @UiThread
     void reset() {
         logger.error("reset");
-
         command = 0;
         if (device != null) {
             device.close();
@@ -267,7 +267,7 @@ public class MainActivity extends Fragment {
             e.printStackTrace();
         }
         mBaseAdapter.notifyDataSetChanged();
-        lvContext.setSelection(mAppList.size());
+        lvContext.setSelection(lvContext.getBottom());
         txtToSpeech.speak(appData.getNAME() + " 已打卡", TextToSpeech.QUEUE_FLUSH, null);
 
 //        String lastResult = name + " " + date + " 已打卡";

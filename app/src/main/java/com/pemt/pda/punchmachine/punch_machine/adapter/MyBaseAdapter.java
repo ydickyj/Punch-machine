@@ -2,6 +2,8 @@ package com.pemt.pda.punchmachine.punch_machine.adapter;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,7 @@ import java.util.Random;
 public class MyBaseAdapter extends BaseAdapter {
 
     Resources resources;
+    Context mC;
     private LayoutInflater mInflater = null;
     private ArrayList<AppData> mScanAppInfos;
 
@@ -30,6 +33,7 @@ public class MyBaseAdapter extends BaseAdapter {
         this.mInflater = LayoutInflater.from(context);
         this.mScanAppInfos = mScanAppInfos;
         resources = context.getResources();
+        mC = context;
     }
 
     @Override
@@ -53,7 +57,7 @@ public class MyBaseAdapter extends BaseAdapter {
 //        if (convertView == null) {
             //由于程序锁的条目与病毒扫描内容基本一致，因此重用程序锁的布局
             convertView = mInflater.inflate(R.layout.listview_item, null);
-        mHolder.mHeadPortrait = (ImageView) convertView.findViewById(R.id.start_flag);
+        mHolder.mHeadPortrait = (ImageView) convertView.findViewById(R.id.head_portrait);
             mHolder.mAppNameTV = (TextView) convertView.findViewById(R.id.tv_content);
             mHolder.mRecordTime = (TextView) convertView.findViewById(R.id.tv_time);
         mHolder.mTvJob = (TextView) convertView.findViewById(R.id.tv_position);
@@ -68,24 +72,29 @@ public class MyBaseAdapter extends BaseAdapter {
         mHolder.mRecordTime.setText(scanAppInfo.getRECORD_TIME());
         mHolder.mTvJob.setText(scanAppInfo.getJOB());
         mHolder.mTvWhere.setText(scanAppInfo.getOFFICE_LOCATION());
-        switch (new Random().nextInt(5)) {
+        int a = new Random().nextInt(2);
+        if (scanAppInfo.getNAME().indexOf("小姐") > 0) {
+            a = a + 3;
+        }
+        Log.e("123123", a + "");
+        switch (a) {
             case 0:
-                mHolder.mHeadPortrait.setBackground(resources.getDrawable(R.drawable.boy));
+                mHolder.mHeadPortrait.setBackground(ContextCompat.getDrawable(mC, R.drawable.boy));
                 break;
             case 1:
-                mHolder.mHeadPortrait.setBackground(resources.getDrawable(R.drawable.boy1));
+                mHolder.mHeadPortrait.setBackground(ContextCompat.getDrawable(mC, R.drawable.boy1));
                 break;
             case 2:
-                mHolder.mHeadPortrait.setBackground(resources.getDrawable(R.drawable.boy2));
+                mHolder.mHeadPortrait.setBackground(ContextCompat.getDrawable(mC, R.drawable.boy2));
                 break;
             case 3:
-                mHolder.mHeadPortrait.setBackground(resources.getDrawable(R.drawable.girl));
+                mHolder.mHeadPortrait.setBackground(ContextCompat.getDrawable(mC, R.drawable.girl));
                 break;
             case 4:
-                mHolder.mHeadPortrait.setBackground(resources.getDrawable(R.drawable.girl1));
+                mHolder.mHeadPortrait.setBackground(ContextCompat.getDrawable(mC, R.drawable.girl2));
                 break;
             case 5:
-                mHolder.mHeadPortrait.setBackground(resources.getDrawable(R.drawable.girl2));
+                mHolder.mHeadPortrait.setBackground(ContextCompat.getDrawable(mC, R.drawable.girl3));
                 break;
         }
 

@@ -1,6 +1,7 @@
 package com.pemt.pda.punchmachine.punch_machine;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.BitmapDrawable;
@@ -23,7 +24,7 @@ import com.j256.ormlite.dao.Dao;
 import com.pemt.pda.punchmachine.punch_machine.adapter.PunchRecordAdapter;
 import com.pemt.pda.punchmachine.punch_machine.db.PDASqliteOpenHelper;
 import com.pemt.pda.punchmachine.punch_machine.db.bean.AppData;
-import com.pemt.pda.punchmachine.punch_machine.pages.BlueDialog;
+import com.pemt.pda.punchmachine.punch_machine.pages.CommonDialog;
 import com.pemt.pda.punchmachine.punch_machine.pages.KCalendar;
 
 import org.androidannotations.annotations.AfterViews;
@@ -44,7 +45,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Random;
 
 /**
  * Created by eng005 on 2016/11/21.
@@ -144,45 +144,54 @@ public class PunchRecord extends Activity {
 
     @Click
     void btnExport() {
-        final Random random = new Random(System.currentTimeMillis());
-        final Context mContext = this.getBaseContext();
-        LayoutInflater layoutInflater = LayoutInflater.from(this);
-        View layout = layoutInflater.inflate(R.layout.export_record_dialog, null);
-        BlueDialog.Builder builder = new BlueDialog.Builder(this).setContentView(layout);
-        builder.setTitle("导出打卡记录");
-        builder.setPositiveButton("导出本日", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        LayoutInflater mLayoutInflater = LayoutInflater.from(PunchRecord.this);
-                        View mLayout = mLayoutInflater.inflate(R.layout.export_loading_dialog, null);
-                        SpringProgressView mSpv = (SpringProgressView) mLayout.findViewById(R.id.spv);
-                        BlueDialog.Builder mBuilder = new BlueDialog.Builder(PunchRecord.this).setContentView(mLayout);
-                        mBuilder.setTitle("导出记录中");
-                        mBuilder.create().show();
-                        mSpv.setMaxCount(50000.0f);
-                        for (int i = 0; i < 5; i++) {
-                            try {
-                                Thread.sleep(10000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            mSpv.setCurrentCount(i * 5000);
-                        }
+        showDialog();
+//        final Random random = new Random(System.currentTimeMillis());
+//        final Context mContext = this.getBaseContext();
+//        LayoutInflater layoutInflater = LayoutInflater.from(this);
+//        View layout = layoutInflater.inflate(R.layout.export_record_dialog, null);
+//        BlueDialog.Builder builder = new BlueDialog.Builder(this).setContentView(layout);
+//        builder.setTitle("导出打卡记录");
+//        builder.setPositiveButton("导出本日", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                        showDialog();
 
+//                    }
+//                    //设置你的操作事项
+//                }
+//        );
+//        builder.setNegativeButton("导出本月",
+//                new android.content.DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                    }
+//                });
+//        builder.create().show();
 
-                    }
-                    //设置你的操作事项
-                }
-        );
-        builder.setNegativeButton("导出本月",
-                new android.content.DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-        builder.create().show();
+//        导出打开csv
+        List<String> newList = sqLiteOpenHelper.queryAllTableName();
+        if (newList != null) {
+            for (int i = 0; i < newList.size(); i++) {
+                sqLiteOpenHelper.ExportToCSV(newList.get(i), newList.get(i) + ".csv");
+            }
+        }
     }
 
+    private void showDialog() {
+        CommonDialog mDialog = new CommonDialog(this);
+        mDialog.setMessage("正在下载");
+        mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        mDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+// TODO Auto-generated method stub
+//cancel(true);
+            }
+        });
+        mDialog.show();
+        mDialog.setMax(100);
+        mDialog.setProgress(10);
+    }
 
     public class PopupWindows extends PopupWindow {
 
